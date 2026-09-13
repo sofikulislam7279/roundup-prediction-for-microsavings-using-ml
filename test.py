@@ -1,3 +1,4 @@
-from roundup.logger import logging
+from roundup.pipeline.training_pipeline import TrainingPipeline
 
-logging.info("Logging setup complete")
+pipeline = TrainingPipeline()
+pipeline.run_pipeline()
