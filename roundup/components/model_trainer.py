@@ -20,7 +20,8 @@ from roundup.entity.config_entity import ModelTrainerConfig
 from roundup.entity.artifact_entity import (
     DataTransformationArtifact,
     ModelTrainerArtifact,
-    RegressionMetricArtifact
+    RegressionMetricArtifact,
+    ProductionModel
 )
 from roundup.entity.estimator import RoundupModel
 
@@ -83,10 +84,16 @@ class ModelTrainer:
                 trained_model_object=best_model
             )
 
+            production_model = ProductionModel(
+                model=roundup_model,
+                rmse=metric_artifact.rmse,
+                mae=metric_artifact.mae,
+                r2_score=metric_artifact.r2_score
+            )
 
             save_object(
                 file_path=self.model_trainer_config.trained_model_file_path,
-                obj=roundup_model
+                obj=production_model
             )
 
             model_trainer_artifact = ModelTrainerArtifact(

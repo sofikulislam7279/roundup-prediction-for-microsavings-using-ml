@@ -89,4 +89,21 @@ class ModelTrainerConfig:
     )
     model_config_file_path: str = MODEL_TRAINER_MODEL_CONFIG_FILE_PATH
 
-    
+
+
+@dataclass
+class ModelEvaluationConfig:
+    bucket_name: str = HF_BUCKET_NAME
+    hf_model_path: str = HF_MODEL_PATH
+
+
+@dataclass
+class ModelPusherConfig:
+    bucket_name: str = HF_BUCKET_NAME
+    hf_model_path: str = HF_MODEL_PATH
+
+
+@dataclass
+class RoundupPredictorConfig:
+    bucket_name: str = HF_BUCKET_NAME
+    hf_model_path: str = HF_MODEL_PATH

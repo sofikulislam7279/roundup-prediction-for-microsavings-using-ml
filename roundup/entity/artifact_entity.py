@@ -31,3 +31,24 @@ class ModelTrainerArtifact:
     trained_model_file_path: str
     metric_artifact: RegressionMetricArtifact
 
+@dataclass
+class ModelEvaluationArtifact:
+    is_model_accepted: bool
+    trained_model_rmse: float
+    best_model_rmse: float
+    hf_model_path: str
+    trained_model_path: str
+
+
+@dataclass
+class ModelPusherArtifact:
+    bucket_name: str
+    hf_model_path: str
+
+
+@dataclass
+class ProductionModel:
+    model: object
+    rmse: float
+    mae: float
+    r2_score: float

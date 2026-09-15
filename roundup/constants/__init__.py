@@ -52,3 +52,7 @@ MODEL_TRAINER_TRAINED_MODEL_DIR: str = "trained_model"
 MODEL_TRAINER_TRAINED_MODEL_NAME: str = "model.pkl"
 MODEL_TRAINER_MODEL_CONFIG_FILE_PATH: str = os.path.join("config", "model.yaml")
 
+# Hugging Face Storage Bucket Configuration
+HF_TOKEN_ENV_KEY: str = "HF_TOKEN"
+HF_BUCKET_NAME: str = "sofikulislam/roundup-model-bucket"
+HF_MODEL_PATH: str = "models/model.pkl"
