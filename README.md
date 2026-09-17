@@ -1,60 +1,66 @@
----
-title: Jomao Adaptive Round-Up Prediction
-emoji: 💰
-colorFrom: green
-colorTo: blue
-sdk: gradio
-app_file: gradio_app.py
-pinned: false
----
+# Jomao — Adaptive Round-Up Prediction for Micro-Savings
 
-
-# Adaptive Round-Up Prediction for Micro-Savings (Jomao)
-
-### ML Framework for Behavior-Aware Round-Up Prediction | bKash · Nagad · Rocket
-
-Jomao is a machine-learning-based micro-savings system that predicts a personalized round-up amount for every digital payment.
-
-Instead of using a fixed rule such as "always round to the nearest Tk 10", Jomao learns from transaction behavior, spending patterns, and user financial signals to estimate an adaptive savings amount.
-
-> **Research Project:** Machine Learning for Personalized Micro-Savings in Digital Payment Systems.
+> **ML Framework for Behavior-Aware Round-Up Prediction** | bKash · Nagad · Rocket
 
 ---
 
-## 📌 Project Overview
+## 🚀 Live Demo
 
-Traditional round-up savings systems generally apply fixed rounding rules. For example, a user spends Tk 285, and the system automatically saves Tk 15 to reach Tk 300.
+### Try Jomao Online
 
-Jomao explores a different approach: predicting a personalized round-up amount based on the user's transaction context, spending behavior, and financial-state features.
+**[▶️ Open Jomao — Hugging Face Demo](https://huggingface.co/spaces/sofikulislam/jomao-roundup-prediction)**
 
-### Research Formulation
+Jomao is available as an interactive Gradio application on Hugging Face Spaces.
+
+Open the application, enter the transaction and user information, and click **Predict Round-up**.
+
+---
+
+## 📌 Research Context
+
+Bangladesh's Mobile Financial Services (MFS) ecosystem processes hundreds of millions of transactions annually, yet no intelligent mechanism exists for converting everyday payments into automatic savings. Jomao builds a supervised regression model that predicts a personalized, behavior-aware round-up amount for each **Make Payment** transaction in real time.
 
 ```text
-Round-Up Amount =
+Round-Up Amount (Tk) =
 f(Transaction Amount,
   User Behavior,
   Financial State,
-  Historical Spending Patterns)
+  Historical Patterns)
 ```
 
-### Research Question
+## ❓ Problem Statement
 
-> Given a user's transaction amount, historical behavior, and financial-state features, can a machine-learning model predict a personalized round-up amount for micro-savings?
+Fixed round-up systems ignore user-specific behavioral and financial patterns. There is no data-driven framework to answer:
 
----
+> Given a user's transaction amount, historical behavior, and financial state — what is the optimal round-up amount for this payment?
 
-## ✨ Key Features
+## 💡 Solution
 
-- Adaptive round-up prediction using machine learning.
-- Behavior-aware transaction feature processing.
-- Supervised regression framework.
-- FastAPI-based prediction API.
-- Real-time prediction interface.
-- Model evaluation using RMSE, MAE, and R².
-- Hugging Face model storage.
-- Docker-based application deployment.
-- GitHub Actions CI/CD workflow.
-- Modular, production-style ML pipeline architecture.
+A machine-learning regression model that learns the interaction between transaction amount, income tier, intraday pressure signals, and historical spending patterns to predict an adaptive round-up that is both meaningful and fair.
+
+## 🔬 Research Significance
+
+This project enables:
+
+- Personalized micro-savings prediction
+- Behavior-aware financial modeling
+- Real-time adaptive rounding systems
+
+It demonstrates that round-up amounts can be learned from user behavior rather than fixed rules, making micro-savings more efficient and user-friendly.
+
+Potential applications include:
+
+- Personalized micro-savings
+- Behavioral financial modeling
+- Digital wallet savings
+- Automated savings assistance
+- Adaptive financial technology systems
+
+### Research Direction
+
+> **ML Framework for Adaptive, Behavior-Aware Round-Up Predictions from User Spending Sequences**
+
+The objective is to investigate how machine learning can transform fixed round-up mechanisms into personalized micro-savings recommendations.
 
 ---
 
@@ -79,13 +85,11 @@ Adaptive Round-Up Amount
 Micro-Savings Wallet
 ```
 
-The model uses transaction and user-level behavioral features to estimate a suitable round-up amount.
-
-The predicted amount can then be added to a dedicated savings wallet.
+The model uses transaction and user-level behavioral features to estimate a suitable round-up amount. The predicted amount can then be added to a dedicated savings wallet.
 
 ---
 
-## 💡 Example
+## 🎯 Example
 
 Suppose a user makes a digital payment:
 
@@ -103,9 +107,9 @@ The resulting amount becomes:
 
 ```text
 Original Transaction = Tk 285.00
-Adaptive Savings     = Tk  11.50
+Adaptive Savings     = Tk  15.00
 --------------------------------
-Total                = Tk 296.50
+Total                = Tk 300.00
 ```
 
 The predicted amount depends on the learned behavior of the user and the transaction context.
@@ -116,9 +120,42 @@ The predicted amount depends on the learned behavior of the user and the transac
 
 ## 📊 Dataset
 
-The project uses a synthetically generated structured transactional dataset designed for machine-learning-based micro-savings prediction.
+The project uses a synthetically generated structured transactional dataset designed for machine-learning-based micro-savings prediction. The dataset represents digital-payment patterns and contains transaction-level behavioral and financial features.
 
-The dataset represents digital-payment patterns and contains transaction-level behavioral and financial features.
+### Schema
+
+```text
+Identifiers / metadata
+├── txn_id
+├── user_id
+└── timestamp
+
+Input features
+├── txn_amount
+├── category
+├── transaction_hour
+├── is_weekend
+├── hour_sin
+├── hour_cos
+├── txn_count_today
+├── daily_total_spent
+├── remaining_daily_capacity
+├── txn_count_prev_7d
+├── avg_spend_last_7days
+├── spending_velocity_ratio
+├── income_tier
+├── user_tenure_days
+├── is_new_user
+├── pressure_score
+├── monthly_savings_so_far
+├── user_savings_streak
+├── days_since_last_txn
+├── clean_number_tier
+└── rounded_amount
+
+Target
+└── roundup_amount
+```
 
 ### Target Variable
 
@@ -127,26 +164,6 @@ roundup_amount
 ```
 
 The target represents the adaptive round-up amount in Bangladeshi Taka (BDT).
-
-### Example Features
-
-| Feature | Description |
-|---|---|
-| `transaction_amount` | Transaction amount in BDT |
-| `merchant_category` | Category of the merchant |
-| `transaction_hour` | Hour of the transaction |
-| `day_of_week` | Day of the transaction |
-| `avg_spend_last_7days` | Average spending over the previous 7 days |
-| `transaction_count_today` | Number of transactions made today |
-| `transaction_count_prev_7days` | Recent transaction frequency |
-| `daily_total_spent_so_far` | Total spending during the current day |
-| `income_tier` | User income category |
-| `user_avg_daily_transaction_count` | Average daily transaction frequency |
-| `category_spend_share` | Spending share of the current category |
-| `pressure_score` | Behavioral spending-pressure indicator |
-| `clean_number_tier` | Transaction rounding-related feature |
-| `clean_target_amount` | Derived target-related feature |
-| `roundup_amount` | Regression target |
 
 ---
 
@@ -177,9 +194,7 @@ This project is formulated as a supervised regression problem.
 
 ### Important Research Note
 
-The current dataset is synthetic. Model performance on synthetic data does not establish real-world predictive accuracy.
-
-Real transaction data and user acceptance feedback would be required for meaningful real-world validation.
+The current dataset is synthetic. Model performance on synthetic data does not establish real-world predictive accuracy. Real transaction data and user acceptance feedback would be required for meaningful real-world validation.
 
 ---
 
@@ -222,17 +237,20 @@ FastAPI Application
 ```text
 roundup-prediction-for-microsavings-using-ml/
 │
-├── app.py
-├── requirements.txt
-├── Dockerfile
-├── .dockerignore
-├── README.md
+├── .github/
+│   └── workflows/
+│       └── ci-cd.yml
 │
 ├── config/
 │   ├── schema.yaml
 │   └── model.yaml
 │
+├── notebooks/
+│
 ├── roundup/
+│   ├── cloud_storage/
+│   │   └── storage_service.py
+│   │
 │   ├── components/
 │   │   ├── data_ingestion.py
 │   │   ├── data_validation.py
@@ -242,24 +260,50 @@ roundup-prediction-for-microsavings-using-ml/
 │   │   └── model_pusher.py
 │   │
 │   ├── configuration/
+│   │   ├── hf_connection.py
+│   │   └── mongodb_connection.py
+│   │
 │   ├── constants/
+│   │
+│   ├── data_access/
+│   │   └── data.py
+│   │
 │   ├── entity/
+│   │   ├── artifact_entity.py
+│   │   ├── config_entity.py
+│   │   ├── estimator.py
+│   │   └── hf_estimator.py
+│   │
+│   ├── exception/
+│   │
+│   ├── logger/
+│   │
 │   ├── pipeline/
 │   │   ├── training_pipeline.py
 │   │   └── prediction_pipeline.py
 │   │
 │   ├── utils/
-│   ├── exception.py
-│   └── logger.py
+│   │   ├── common_utils.py
+│   │   └── model_utils.py
+│   
 │
 ├── static/
 │
 ├── templates/
-│   └── index.html
 │
-└── .github/
-    └── workflows/
-        └── ci-cd.yml
+├── .env.example
+├── .gitignore
+├── app.py
+├── Dockerfile
+├── gradio_app.py
+├── requirements.txt
+├── template.py
+├── pyproject.toml
+├── test.py
+├── Dockerfile
+├── .dockerignore
+└── README.md
+
 ```
 
 ---
@@ -312,8 +356,8 @@ Example response:
 ```json
 {
   "original_amount": 285.0,
-  "roundup_amount": 11.5,
-  "rounded_total": 296.5
+  "roundup_amount": 15.0,
+  "rounded_total": 300.0
 }
 ```
 
@@ -398,9 +442,7 @@ sofikulislam/roundup-model-bucket
 models/model.pkl
 ```
 
-The prediction pipeline loads the production model from Hugging Face.
-
-The Hugging Face access token is provided through:
+The prediction pipeline loads the production model from Hugging Face. The Hugging Face access token is provided through:
 
 ```text
 HF_TOKEN
@@ -427,7 +469,7 @@ GitHub Actions
     └── Docker image build
     │
     ▼
-Hugging Face Docker Space
+Hugging Face Gradio Space
     │
     ▼
 FastAPI Application
@@ -479,7 +521,7 @@ After successful CI validation, the deployment stage can synchronize the applica
 
 - Docker
 - GitHub Actions
-- Hugging Face Spaces
+- Hugging Face Spaces & Buckets
 
 ### Development
 
@@ -487,26 +529,6 @@ After successful CI validation, the deployment stage can synchronize the applica
 - GitHub
 - Conda
 - Python 3.10
-
----
-
-## 🔬 Research Significance
-
-This project investigates whether adaptive micro-savings amounts can be learned from user spending behavior instead of relying entirely on fixed rounding rules.
-
-Potential applications include:
-
-- Personalized micro-savings.
-- Behavioral financial modeling.
-- Digital wallet savings.
-- Automated savings assistance.
-- Adaptive financial technology systems.
-
-### Research Direction
-
-> **ML Framework for Adaptive, Behavior-Aware Round-Up Predictions from User Spending Sequences**
-
-The objective is to investigate how machine learning can transform fixed round-up mechanisms into personalized micro-savings recommendations.
 
 ---
 
@@ -548,7 +570,7 @@ The project is focused on developing a machine-learning framework for adaptive r
 
 **Sofikul Islam**
 
-Computer Science & Engineering Student  
+Computer Science & Engineering Student
 Islamic University, Bangladesh
 
 GitHub: [@sofikulislam7279](https://github.com/sofikulislam7279)
