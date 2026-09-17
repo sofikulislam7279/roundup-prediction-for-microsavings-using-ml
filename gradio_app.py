@@ -37,8 +37,15 @@ def predict_roundup(
             days_since_last_txn=int(days_since_last_txn),
         )
 
-        roundup_amount = round(max(float(roundup_amount), 0.0), 2)
-        rounded_total = round(float(txn_amount) + roundup_amount, 2)
+        roundup_amount = round(
+            max(float(roundup_amount), 0.0),
+            2,
+        )
+
+        rounded_total = round(
+            float(txn_amount) + roundup_amount,
+            2,
+        )
 
         return (
             f"৳{roundup_amount:.2f}",
@@ -52,6 +59,7 @@ def predict_roundup(
         )
 
 
+# Gradio theme
 theme = gr.themes.Soft(
     primary_hue="green",
     secondary_hue="emerald",
@@ -59,25 +67,22 @@ theme = gr.themes.Soft(
 )
 
 
-with gr.Blocks(
-    theme=theme,
-    title="Jomao — Adaptive Round-Up Prediction",
-) as demo:
+with gr.Blocks() as demo:
 
     gr.Markdown(
         """
         # Jomao
         ### Adaptive Round-Up Prediction
 
-        Enter your transaction and spending information to predict
-        an adaptive micro-savings round-up.
+        Predict an adaptive micro-savings amount from your
+        transaction and spending behavior.
         """
     )
 
-    # Transaction information
     gr.Markdown("### Transaction")
 
     with gr.Row():
+
         txn_amount = gr.Number(
             label="Transaction Amount (৳)",
             value=285,
@@ -89,10 +94,11 @@ with gr.Blocks(
             value="Food",
         )
 
-    # Spending information
+
     gr.Markdown("### Spending Behavior")
 
     with gr.Row():
+
         txn_count_today = gr.Number(
             label="Transactions Today",
             value=3,
@@ -107,6 +113,7 @@ with gr.Blocks(
         )
 
     with gr.Row():
+
         txn_count_prev_7d = gr.Number(
             label="Transactions Previous 7 Days",
             value=18,
@@ -120,12 +127,17 @@ with gr.Blocks(
             minimum=0,
         )
 
-    # Savings information
+
     gr.Markdown("### Savings Profile")
 
     with gr.Row():
+
         income_tier = gr.Dropdown(
-            choices=["low", "middle", "high"],
+            choices=[
+                "low",
+                "middle",
+                "high",
+            ],
             label="Income Tier",
             value="middle",
         )
@@ -138,6 +150,7 @@ with gr.Blocks(
         )
 
     with gr.Row():
+
         monthly_savings_so_far = gr.Number(
             label="Monthly Savings So Far (৳)",
             value=850,
@@ -158,16 +171,17 @@ with gr.Blocks(
         minimum=0,
     )
 
-    # Prediction button
+
     predict_btn = gr.Button(
         "Predict Round-up",
         variant="primary",
     )
 
-    # Prediction output BELOW all inputs
+
     gr.Markdown("### Prediction")
 
     with gr.Row():
+
         roundup_output = gr.Textbox(
             label="Predicted Round-up",
             interactive=False,
@@ -177,6 +191,7 @@ with gr.Blocks(
             label="Total After Round-up",
             interactive=False,
         )
+
 
     predict_btn.click(
         fn=predict_roundup,
@@ -200,5 +215,9 @@ with gr.Blocks(
     )
 
 
+
 if __name__ == "__main__":
-    demo.launch()
+    demo.launch(
+        theme=theme,
+        title="Jomao — Adaptive Round-Up Prediction",
+    )
