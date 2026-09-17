@@ -1,3 +1,15 @@
+---
+title: Jomao Adaptive Round-Up Prediction
+emoji: 💰
+colorFrom: green
+colorTo: blue
+sdk: gradio
+sdk_version: "6.0.0"
+python_version: "3.10"
+app_file: gradio_app.py
+pinned: false
+---
+
 # Jomao — Adaptive Round-Up Prediction for Micro-Savings
 
 > **ML Framework for Behavior-Aware Round-Up Prediction** | bKash · Nagad · Rocket
