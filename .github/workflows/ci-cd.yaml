@@ -95,6 +95,7 @@ jobs:
         run: |
           hf repos create sofikulislam/jomao-roundup-prediction \
             --type space \
+            --space-sdk gradio \
             --exist-ok
 
       - name: Sync repository to Hugging Face Space
