@@ -59,8 +59,7 @@ jobs:
           python -c "import app; print('FastAPI application import successful')"
 
 
-
-    # ==========================================================
+  # ==========================================================
   # CD - Deploy to Hugging Face Gradio Space
   # ==========================================================
 
@@ -80,14 +79,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
+
       - name: Set up Python 3.10
         uses: actions/setup-python@v6
         with:
           python-version: "3.10"
 
+
       - name: Install Hugging Face Hub
         run: |
           python -m pip install --upgrade huggingface_hub
+
+
+      # --------------------------------------------------------
+      # Verify Hugging Face authentication
+      # --------------------------------------------------------
 
       - name: Verify Hugging Face authentication
         env:
@@ -96,6 +102,36 @@ jobs:
           echo "Checking Hugging Face authentication..."
           hf auth whoami
 
-          echo "Checking target Space..."
-          hf repo-files ls sofikulislam/jomao-roundup-prediction \
-            --repo-type space
+
+      # --------------------------------------------------------
+      # Create or verify Hugging Face Space
+      # --------------------------------------------------------
+
+      - name: Create or verify Hugging Face Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          hf repos create sofikulislam/jomao-roundup-prediction \
+            --repo-type space \
+            --sdk gradio \
+            --exist-ok
+
+
+      # --------------------------------------------------------
+      # Upload repository to Hugging Face Space
+      # --------------------------------------------------------
+
+      - name: Upload repository to Hugging Face Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          hf upload sofikulislam/jomao-roundup-prediction . . \
+            --repo-type space \
+            --exclude ".git/*" \
+            --exclude ".github/*" \
+            --exclude "__pycache__/*" \
+            --exclude "*.pyc" \
+            --exclude ".env" \
+            --exclude "artifact/*" \
+            --exclude "data/*" \
+            --commit-message "Deploy from GitHub Actions"
