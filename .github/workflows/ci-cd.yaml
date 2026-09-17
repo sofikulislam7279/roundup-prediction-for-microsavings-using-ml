@@ -60,7 +60,7 @@ jobs:
 
 
 
-  # ==========================================================
+    # ==========================================================
   # CD - Deploy to Hugging Face Gradio Space
   # ==========================================================
 
@@ -80,28 +80,39 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Set up Python
+
+      - name: Set up Python 3.10
         uses: actions/setup-python@v6
         with:
           python-version: "3.10"
 
+
       - name: Install Hugging Face Hub
         run: |
           python -m pip install --upgrade huggingface_hub
+
 
       - name: Create or verify Hugging Face Space
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
           hf repos create sofikulislam/jomao-roundup-prediction \
-            --type space \
-            --space-sdk gradio \
+            --repo-type space \
+            --sdk gradio \
             --exist-ok
 
-      - name: Sync repository to Hugging Face Space
-        uses: huggingface/hub-sync@v0.1.0
-        with:
-          github_repo_id: ${{ github.repository }}
-          huggingface_repo_id: sofikulislam/jomao-roundup-prediction
-          hf_token: ${{ secrets.HF_TOKEN }}
-          space_sdk: gradio
+
+      - name: Upload repository to Hugging Face Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          hf upload sofikulislam/jomao-roundup-prediction . . \
+            --repo-type space \
+            --exclude ".git/*" \
+            --exclude ".github/*" \
+            --exclude "__pycache__/*" \
+            --exclude "*.pyc" \
+            --exclude ".env" \
+            --exclude "artifact/*" \
+            --exclude "data/*" \
+            --commit-message "Deploy from GitHub Actions"
