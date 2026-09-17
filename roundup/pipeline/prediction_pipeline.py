@@ -12,7 +12,8 @@ from roundup.logger import logging
 
 class RoundupData:
     """
-    Prepare transaction data and derived features for roundup prediction.
+    Prepare transaction data and derived features
+    for round-up prediction.
     """
 
     def __init__(
@@ -44,17 +45,24 @@ class RoundupData:
             self.income_tier = income_tier
             self.user_tenure_days = user_tenure_days
 
-            self.monthly_savings_so_far = monthly_savings_so_far
-            self.user_savings_streak = user_savings_streak
+            self.monthly_savings_so_far = (
+                monthly_savings_so_far
+            )
 
-            self.days_since_last_txn = days_since_last_txn
+            self.user_savings_streak = (
+                user_savings_streak
+            )
+
+            self.days_since_last_txn = (
+                days_since_last_txn
+            )
 
         except Exception as e:
             raise RoundupException(e, sys) from e
 
     def get_roundup_data_as_dict(self) -> dict:
         """
-        Create model input features from transaction data.
+        Create the complete model input feature dictionary.
         """
 
         logging.info(
@@ -62,7 +70,9 @@ class RoundupData:
         )
 
         try:
-            transaction_hour = self.transaction_time.hour
+            transaction_hour = (
+                self.transaction_time.hour
+            )
 
             is_weekend = (
                 1
@@ -107,12 +117,18 @@ class RoundupData:
             input_data = {
                 "txn_amount": [self.txn_amount],
                 "category": [self.category],
-                "transaction_hour": [transaction_hour],
+                "transaction_hour": [
+                    transaction_hour
+                ],
                 "is_weekend": [is_weekend],
                 "hour_sin": [hour_sin],
                 "hour_cos": [hour_cos],
-                "txn_count_today": [self.txn_count_today],
-                "daily_total_spent": [self.daily_total_spent],
+                "txn_count_today": [
+                    self.txn_count_today
+                ],
+                "daily_total_spent": [
+                    self.daily_total_spent
+                ],
                 "remaining_daily_capacity": [
                     remaining_daily_capacity
                 ],
@@ -153,7 +169,7 @@ class RoundupData:
 
     def get_roundup_input_data_frame(self) -> DataFrame:
         """
-        Convert roundup prediction input into a DataFrame.
+        Convert input data into a pandas DataFrame.
         """
 
         try:
@@ -178,12 +194,14 @@ class RoundupData:
 
 class RoundupPredictor:
     """
-    Load the production model and generate roundup predictions.
+    Load the production model and generate predictions.
     """
 
     def __init__(
         self,
-        prediction_pipeline_config: RoundupPredictorConfig | None = None,
+        prediction_pipeline_config: (
+            RoundupPredictorConfig | None
+        ) = None,
     ) -> None:
 
         try:
@@ -227,7 +245,7 @@ class RoundupPredictor:
         days_since_last_txn: int,
     ) -> float:
         """
-        Generate a roundup amount prediction.
+        Generate a round-up amount prediction.
         """
 
         logging.info(
@@ -269,9 +287,7 @@ class RoundupPredictor:
                 dataframe
             )
 
-            prediction = float(
-                result[0]
-            )
+            prediction = float(result[0])
 
             logging.info(
                 f"Roundup prediction generated: {prediction}"

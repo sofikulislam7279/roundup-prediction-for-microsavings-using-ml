@@ -1,165 +1,668 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Jomao — Round-up engine</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Jomao — Adaptive Round-up Prediction</title>
+
+  <meta
+    name="description"
+    content="Jomao is an adaptive round-up prediction engine powered by machine learning."
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', path='css/style.css') }}"
+  />
 </head>
+
 <body>
 
-<div class="page">
+  <div class="page-shell">
 
-  <header class="site-header">
-    <div class="wordmark">Jomao</div>
-    <p class="tagline">See what today's spare change could become.</p>
-    <p class="rail">bKash · Nagad · Rocket</p>
-  </header>
+    <!-- Navigation -->
+    <header class="site-header">
 
-  <main class="layout">
+      <a class="brand" href="/" aria-label="Jomao home">
+        <span class="brand-mark">
+          <img
+            src="{{ url_for('static', path='images/jomao-logo.jpeg') }}"
+            alt="Jomao logo"
+          />
+        </span>
 
-    <!-- Transaction form -->
-    <section class="form-panel" aria-label="Transaction details">
-      <form id="roundup-form" novalidate>
+        <span class="brand-name">jomao<span>.</span></span>
+      </a>
 
-        <fieldset class="cluster">
-          <legend>This transaction</legend>
-
-          <div class="field">
-            <label for="txn_amount">Amount paid, Tk</label>
-            <input type="number" id="txn_amount" name="txn_amount" min="1" step="0.01" placeholder="285.00" required />
-          </div>
-
-          <div class="field">
-            <label for="category">Category</label>
-            <select id="category" name="category" required>
-              <option value="" disabled selected>Choose a category</option>
-              <option value="food_delivery">Food delivery</option>
-              <option value="ecommerce">E-commerce</option>
-              <option value="ride_sharing">Ride sharing</option>
-              <option value="shopping">Shopping</option>
-            </select>
-          </div>
-        </fieldset>
-
-        <fieldset class="cluster">
-          <legend>This week's pattern</legend>
-
-          <div class="field-row">
-            <div class="field">
-              <label for="txn_count_today">Payments made today</label>
-              <input type="number" id="txn_count_today" name="txn_count_today" min="0" step="1" placeholder="3" required />
-            </div>
-            <div class="field">
-              <label for="daily_total_spent">Spent today so far, Tk</label>
-              <input type="number" id="daily_total_spent" name="daily_total_spent" min="0" step="0.01" placeholder="640" required />
-            </div>
-          </div>
-
-          <div class="field-row">
-            <div class="field">
-              <label for="txn_count_prev_7d">Payments in the last 7 days</label>
-              <input type="number" id="txn_count_prev_7d" name="txn_count_prev_7d" min="0" step="1" placeholder="18" required />
-            </div>
-            <div class="field">
-              <label for="avg_spend_last_7days">Average daily spend, last 7 days</label>
-              <input type="number" id="avg_spend_last_7days" name="avg_spend_last_7days" min="0" step="0.01" placeholder="710" required />
-            </div>
-          </div>
-
-          <div class="field">
-            <label for="days_since_last_txn">Days since the last payment</label>
-            <input type="number" id="days_since_last_txn" name="days_since_last_txn" min="0" step="1" placeholder="1" required />
-          </div>
-        </fieldset>
-
-        <fieldset class="cluster">
-          <legend>Your profile</legend>
-
-          <div class="field-row">
-            <div class="field">
-              <label for="income_tier">Income tier</label>
-              <select id="income_tier" name="income_tier" required>
-                <option value="" disabled selected>Choose a tier</option>
-                <option value="low">Low</option>
-                <option value="lower_middle">Lower-middle</option>
-                <option value="middle">Middle</option>
-                <option value="upper_middle">Upper-middle</option>
-                <option value="high">High</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="user_tenure_days">Days using Jomao</label>
-              <input type="number" id="user_tenure_days" name="user_tenure_days" min="0" step="1" placeholder="145" required />
-            </div>
-          </div>
-
-          <div class="field-row">
-            <div class="field">
-              <label for="monthly_savings_so_far">Saved this month, Tk</label>
-              <input type="number" id="monthly_savings_so_far" name="monthly_savings_so_far" min="0" step="0.01" placeholder="420" required />
-            </div>
-            <div class="field">
-              <label for="user_savings_streak">Savings streak, days</label>
-              <input type="number" id="user_savings_streak" name="user_savings_streak" min="0" step="1" placeholder="12" required />
-            </div>
-          </div>
-        </fieldset>
-
-        <button type="submit" class="submit-btn">
-          <span class="btn-label">Calculate round-up</span>
-        </button>
-        <p class="form-note" id="form-note" role="alert"></p>
-
-      </form>
-    </section>
-
-    <!-- Receipt-style result -->
-    <aside class="receipt-wrap" aria-label="Round-up result">
-      <div class="receipt" id="receipt">
-
-        <div class="receipt-empty" id="receipt-empty">
-          <div class="coin" aria-hidden="true">
-            <svg viewBox="0 0 64 64" width="40" height="40">
-              <circle cx="32" cy="32" r="28" fill="none" stroke="currentColor" stroke-width="2.5"/>
-              <text x="32" y="40" font-family="IBM Plex Mono, monospace" font-size="22" text-anchor="middle" fill="currentColor">৳</text>
-            </svg>
-          </div>
-          <p>Fill in the transaction and calculate to see today's round-up.</p>
-        </div>
-
-        <div class="receipt-body" id="receipt-body" hidden>
-          <p class="receipt-heading">Round-up slip</p>
-          <div class="receipt-divider"></div>
-
-          <div class="receipt-line">
-            <span>Paid</span>
-            <span id="r-original">Tk 0.00</span>
-          </div>
-          <div class="receipt-line">
-            <span>Rounded to</span>
-            <span id="r-total">Tk 0.00</span>
-          </div>
-
-          <div class="receipt-divider"></div>
-
-          <p class="receipt-savings-label">Saved to your jar</p>
-          <p class="receipt-savings-amount" id="r-roundup">Tk 0.00</p>
-
-          <div class="receipt-divider dashed"></div>
-          <p class="receipt-footer">Every payment, a little more put by.</p>
-        </div>
-
+      <div class="header-center">
+        <span class="status-dot"></span>
+        <span>ML Prediction Engine</span>
       </div>
-    </aside>
 
-  </main>
+      <div class="header-right">
+        <span class="prototype-badge">Research prototype</span>
+      </div>
 
-</div>
+    </header>
 
-<script src="{{ url_for('static', path='js/app.js') }}"></script>
+    <!-- Main content -->
+    <main>
+
+      <!-- Hero -->
+      <section class="hero">
+
+        <div class="hero-copy">
+
+          <div class="eyebrow">
+            <span class="eyebrow-line"></span>
+            ADAPTIVE MICRO-SAVINGS
+          </div>
+
+          <h1>
+            Small amounts.<br />
+            <em>Smarter savings.</em>
+          </h1>
+
+          <p class="hero-description">
+            Jomao explores how machine learning can personalize
+            round-up savings from everyday transactions.
+          </p>
+
+          <div class="hero-tags">
+            <span>Python</span>
+            <span>Scikit-learn</span>
+            <span>FastAPI</span>
+          </div>
+
+        </div>
+
+        <!-- Hero visual -->
+        <div class="hero-visual" aria-label="Savings illustration">
+
+          <div class="orb orb-one"></div>
+          <div class="orb orb-two"></div>
+
+          <div class="jar-illustration">
+
+            <div class="jar-lid"></div>
+
+            <div class="jar-body">
+
+              <div class="jar-shine"></div>
+
+              <div class="jar-label">
+                <span class="jar-label-small">YOUR</span>
+                <strong>JOMAO</strong>
+                <span class="jar-label-small">SAVINGS</span>
+              </div>
+
+              <div class="jar-coins">
+                <span>৳</span>
+                <span>৳</span>
+                <span>৳</span>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="floating-note floating-note-top">
+            <span class="floating-icon">↗</span>
+            <div>
+              <strong>Every payment</strong>
+              <small>A little more put by.</small>
+            </div>
+          </div>
+
+          <div class="floating-note floating-note-bottom">
+            <span class="floating-icon">৳</span>
+            <div>
+              <strong>Adaptive savings</strong>
+              <small>Powered by ML</small>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- Project stats -->
+      <section class="stats-grid" aria-label="Project statistics">
+
+        <div class="stat-card">
+          <span class="stat-label">DATASET</span>
+          <strong class="stat-value">24,222</strong>
+          <span class="stat-description">Synthetic transactions</span>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-label">MODEL</span>
+          <strong class="stat-value">ML</strong>
+          <span class="stat-description">Round-up prediction</span>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-label">PIPELINE</span>
+          <strong class="stat-value">E2E</strong>
+          <span class="stat-description">Training to prediction</span>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-label">STATUS</span>
+          <strong class="stat-value status-value">
+            <span class="status-dot"></span>
+            Ready
+          </strong>
+          <span class="stat-description">Local model demo</span>
+        </div>
+
+      </section>
+
+      <!-- Predictor workspace -->
+      <section class="workspace" id="predictor">
+
+        <div class="section-heading">
+
+          <div>
+            <div class="eyebrow">
+              <span class="eyebrow-line"></span>
+              ROUND-UP ENGINE
+            </div>
+
+            <h2>Try the prediction.</h2>
+
+            <p>
+              Enter transaction and user context.
+              Your trained model will generate a round-up amount.
+            </p>
+          </div>
+
+          <div class="section-number">01 / 02</div>
+
+        </div>
+
+        <div class="workspace-grid">
+
+          <!-- Form -->
+          <section class="form-panel">
+
+            <form id="roundup-form" novalidate>
+
+              <fieldset class="cluster">
+
+                <legend>
+                  <span class="legend-number">01</span>
+                  This transaction
+                </legend>
+
+                <div class="field">
+                  <label for="txn_amount">Amount paid, Tk</label>
+
+                  <div class="input-wrap">
+                    <span class="input-prefix">৳</span>
+
+                    <input
+                      type="number"
+                      id="txn_amount"
+                      name="txn_amount"
+                      min="0.01"
+                      step="0.01"
+                      placeholder="285.00"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label for="category">Transaction category</label>
+
+                  <select id="category" name="category" required>
+                    <option value="" disabled selected>
+                      Choose a category
+                    </option>
+                    <option value="food_delivery">Food delivery</option>
+                    <option value="ecommerce">E-commerce</option>
+                    <option value="ride_sharing">Ride sharing</option>
+                    <option value="shopping">Shopping</option>
+                  </select>
+                </div>
+
+              </fieldset>
+
+              <fieldset class="cluster">
+
+                <legend>
+                  <span class="legend-number">02</span>
+                  Spending pattern
+                </legend>
+
+                <div class="field-row">
+
+                  <div class="field">
+                    <label for="txn_count_today">
+                      Payments today
+                    </label>
+
+                    <input
+                      type="number"
+                      id="txn_count_today"
+                      name="txn_count_today"
+                      min="0"
+                      step="1"
+                      placeholder="3"
+                      required
+                    />
+                  </div>
+
+                  <div class="field">
+                    <label for="daily_total_spent">
+                      Spent today, Tk
+                    </label>
+
+                    <input
+                      type="number"
+                      id="daily_total_spent"
+                      name="daily_total_spent"
+                      min="0"
+                      step="0.01"
+                      placeholder="640"
+                      required
+                    />
+                  </div>
+
+                </div>
+
+                <div class="field-row">
+
+                  <div class="field">
+                    <label for="txn_count_prev_7d">
+                      Payments / last 7d
+                    </label>
+
+                    <input
+                      type="number"
+                      id="txn_count_prev_7d"
+                      name="txn_count_prev_7d"
+                      min="0"
+                      step="1"
+                      placeholder="18"
+                      required
+                    />
+                  </div>
+
+                  <div class="field">
+                    <label for="avg_spend_last_7days">
+                      Avg. daily spend, Tk
+                    </label>
+
+                    <input
+                      type="number"
+                      id="avg_spend_last_7days"
+                      name="avg_spend_last_7days"
+                      min="0"
+                      step="0.01"
+                      placeholder="710"
+                      required
+                    />
+                  </div>
+
+                </div>
+
+                <div class="field">
+                  <label for="days_since_last_txn">
+                    Days since last payment
+                  </label>
+
+                  <input
+                    type="number"
+                    id="days_since_last_txn"
+                    name="days_since_last_txn"
+                    min="0"
+                    step="1"
+                    placeholder="1"
+                    required
+                  />
+                </div>
+
+              </fieldset>
+
+              <fieldset class="cluster">
+
+                <legend>
+                  <span class="legend-number">03</span>
+                  User profile
+                </legend>
+
+                <div class="field-row">
+
+                  <div class="field">
+                    <label for="income_tier">Income tier</label>
+
+                    <select id="income_tier" name="income_tier" required>
+                      <option value="" disabled selected>
+                        Choose a tier
+                      </option>
+                      <option value="low">Low</option>
+                      <option value="middle">Middle</option>
+                      <option value="high">High</option>
+                    </select>
+                  </div>
+
+                  <div class="field">
+                    <label for="user_tenure_days">
+                      Days using Jomao
+                    </label>
+
+                    <input
+                      type="number"
+                      id="user_tenure_days"
+                      name="user_tenure_days"
+                      min="0"
+                      step="1"
+                      placeholder="145"
+                      required
+                    />
+                  </div>
+
+                </div>
+
+                <div class="field-row">
+
+                  <div class="field">
+                    <label for="monthly_savings_so_far">
+                      Saved this month, Tk
+                    </label>
+
+                    <input
+                      type="number"
+                      id="monthly_savings_so_far"
+                      name="monthly_savings_so_far"
+                      min="0"
+                      step="0.01"
+                      placeholder="420"
+                      required
+                    />
+                  </div>
+
+                  <div class="field">
+                    <label for="user_savings_streak">
+                      Savings streak, days
+                    </label>
+
+                    <input
+                      type="number"
+                      id="user_savings_streak"
+                      name="user_savings_streak"
+                      min="0"
+                      step="1"
+                      placeholder="12"
+                      required
+                    />
+                  </div>
+
+                </div>
+
+              </fieldset>
+
+              <button type="submit" class="submit-btn" id="submit-btn">
+
+                <span class="btn-label">Calculate round-up</span>
+
+                <span class="btn-arrow">↗</span>
+
+              </button>
+
+              <button
+                type="button"
+                class="reset-btn"
+                id="reset-btn"
+              >
+                Reset form
+              </button>
+
+              <p
+                class="form-note"
+                id="form-note"
+                role="alert"
+                aria-live="polite"
+              ></p>
+
+            </form>
+
+          </section>
+
+          <!-- Receipt -->
+          <aside class="receipt-wrap" aria-label="Prediction result">
+
+            <div class="receipt" id="receipt">
+
+              <div class="receipt-topline">
+                <span>JOMAO / 001</span>
+                <span>ML ENGINE</span>
+              </div>
+
+              <div class="receipt-empty" id="receipt-empty">
+
+                <div class="empty-illustration">
+                  <div class="empty-coin">৳</div>
+                </div>
+
+                <span class="empty-label">YOUR RESULT AWAITS</span>
+
+                <h3>Every little bit counts.</h3>
+
+                <p>
+                  Fill in your transaction details
+                  to see the model's prediction.
+                </p>
+
+                <div class="empty-dashes">
+                  — — — — — — —
+                </div>
+
+              </div>
+
+              <div class="receipt-body" id="receipt-body" hidden>
+
+                <div class="receipt-header">
+                  <div>
+                    <span class="receipt-kicker">PREDICTION RESULT</span>
+                    <h3>Round-up slip</h3>
+                  </div>
+
+                  <div class="receipt-check">✓</div>
+                </div>
+
+                <div class="receipt-divider"></div>
+
+                <div class="receipt-line">
+                  <span>Transaction amount</span>
+                  <strong id="r-original">Tk 0.00</strong>
+                </div>
+
+                <div class="receipt-line">
+                  <span>Predicted savings</span>
+                  <strong id="r-roundup-small">Tk 0.00</strong>
+                </div>
+
+                <div class="receipt-divider"></div>
+
+                <div class="savings-block">
+
+                  <span class="receipt-savings-label">
+                    SUGGESTED ROUND-UP
+                  </span>
+
+                  <strong
+                    class="receipt-savings-amount"
+                    id="r-roundup"
+                  >
+                    Tk 0.00
+                  </strong>
+
+                  <span class="savings-caption">
+                    Predicted by your trained ML model
+                  </span>
+
+                </div>
+
+                <div class="receipt-divider dashed"></div>
+
+                <div class="receipt-line total-line">
+                  <span>Rounded total</span>
+                  <strong id="r-total">Tk 0.00</strong>
+                </div>
+
+                <div class="receipt-message">
+                  <span class="message-icon">✦</span>
+                  <p>
+                    Small steps today.<br />
+                    A little more tomorrow.
+                  </p>
+                </div>
+
+                <div class="receipt-meta">
+                  <span>JOMAO ML</span>
+                  <span id="receipt-time">--:--</span>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="receipt-disclaimer">
+              <span>ⓘ</span>
+              <p>
+                Research prototype. Predictions use synthetic
+                training data and are not financial advice.
+              </p>
+            </div>
+
+          </aside>
+
+        </div>
+
+      </section>
+
+      <!-- Pipeline showcase -->
+      <section class="pipeline-section">
+
+        <div class="section-heading">
+
+          <div>
+            <div class="eyebrow">
+              <span class="eyebrow-line"></span>
+              UNDER THE HOOD
+            </div>
+
+            <h2>From data to prediction.</h2>
+
+            <p>
+              An end-to-end machine learning workflow,
+              built for the Jomao round-up engine.
+            </p>
+          </div>
+
+          <div class="section-number">02 / 02</div>
+
+        </div>
+
+        <div class="pipeline-grid">
+
+          <div class="pipeline-step">
+            <span class="pipeline-number">01</span>
+            <div class="pipeline-icon">▦</div>
+            <h3>Data ingestion</h3>
+            <p>Load and prepare transaction data.</p>
+          </div>
+
+          <div class="pipeline-connector">→</div>
+
+          <div class="pipeline-step">
+            <span class="pipeline-number">02</span>
+            <div class="pipeline-icon">⌘</div>
+            <h3>Data validation</h3>
+            <p>Check schema and data quality.</p>
+          </div>
+
+          <div class="pipeline-connector">→</div>
+
+          <div class="pipeline-step">
+            <span class="pipeline-number">03</span>
+            <div class="pipeline-icon">⧉</div>
+            <h3>Transformation</h3>
+            <p>Build features for prediction.</p>
+          </div>
+
+          <div class="pipeline-connector">→</div>
+
+          <div class="pipeline-step">
+            <span class="pipeline-number">04</span>
+            <div class="pipeline-icon">◈</div>
+            <h3>Model training</h3>
+            <p>Train and evaluate the model.</p>
+          </div>
+
+          <div class="pipeline-connector">→</div>
+
+          <div class="pipeline-step">
+            <span class="pipeline-number">05</span>
+            <div class="pipeline-icon">↗</div>
+            <h3>Prediction API</h3>
+            <p>Serve model predictions with FastAPI.</p>
+          </div>
+
+        </div>
+
+        <div class="pipeline-footer">
+
+          <div class="tech-stack">
+            <span>Python</span>
+            <span>NumPy</span>
+            <span>Pandas</span>
+            <span>Scikit-learn</span>
+            <span>FastAPI</span>
+          </div>
+
+          <span class="pipeline-status">
+            <span class="status-dot"></span>
+            Local demo
+          </span>
+
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+
+      <div class="footer-brand">
+        <span class="brand-name">jomao<span>.</span></span>
+        <span>Adaptive micro-savings research</span>
+      </div>
+
+      <div class="footer-right">
+        <span>Built with curiosity.</span>
+        <span>© 2026 Jomao</span>
+      </div>
+
+    </footer>
+
+  </div>
+
+  <script src="{{ url_for('static', path='js/app.js') }}"></script>
+
 </body>
 </html>
