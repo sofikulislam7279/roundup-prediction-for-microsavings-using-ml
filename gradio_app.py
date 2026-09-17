@@ -1,4 +1,5 @@
 import gradio as gr
+import spaces
 
 from roundup.pipeline.prediction_pipeline import RoundupPredictor
 
@@ -7,6 +8,7 @@ from roundup.pipeline.prediction_pipeline import RoundupPredictor
 predictor = RoundupPredictor()
 
 
+@spaces.GPU
 def predict_roundup(
     txn_amount,
     category,
