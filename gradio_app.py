@@ -59,13 +59,20 @@ def predict_roundup(
         )
 
 
-# Gradio theme
+# --------------------------------------------------
+# Theme
+# --------------------------------------------------
+
 theme = gr.themes.Soft(
     primary_hue="green",
     secondary_hue="emerald",
     neutral_hue="slate",
 )
 
+
+# --------------------------------------------------
+# Gradio App
+# --------------------------------------------------
 
 with gr.Blocks() as demo:
 
@@ -78,6 +85,10 @@ with gr.Blocks() as demo:
         transaction and spending behavior.
         """
     )
+
+    # --------------------------------------------------
+    # Transaction
+    # --------------------------------------------------
 
     gr.Markdown("### Transaction")
 
@@ -94,6 +105,9 @@ with gr.Blocks() as demo:
             value="Food",
         )
 
+    # --------------------------------------------------
+    # Spending Behavior
+    # --------------------------------------------------
 
     gr.Markdown("### Spending Behavior")
 
@@ -127,6 +141,9 @@ with gr.Blocks() as demo:
             minimum=0,
         )
 
+    # --------------------------------------------------
+    # Savings Profile
+    # --------------------------------------------------
 
     gr.Markdown("### Savings Profile")
 
@@ -171,12 +188,18 @@ with gr.Blocks() as demo:
         minimum=0,
     )
 
+    # --------------------------------------------------
+    # Prediction Button
+    # --------------------------------------------------
 
     predict_btn = gr.Button(
         "Predict Round-up",
         variant="primary",
     )
 
+    # --------------------------------------------------
+    # Prediction Result
+    # --------------------------------------------------
 
     gr.Markdown("### Prediction")
 
@@ -192,6 +215,9 @@ with gr.Blocks() as demo:
             interactive=False,
         )
 
+    # --------------------------------------------------
+    # Prediction Event
+    # --------------------------------------------------
 
     predict_btn.click(
         fn=predict_roundup,
@@ -215,9 +241,11 @@ with gr.Blocks() as demo:
     )
 
 
+# --------------------------------------------------
+# Launch
+# --------------------------------------------------
 
 if __name__ == "__main__":
     demo.launch(
         theme=theme,
-        title="Jomao — Adaptive Round-Up Prediction",
     )
