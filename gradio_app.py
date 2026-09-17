@@ -78,7 +78,6 @@ with gr.Blocks() as demo:
 
     gr.Markdown(
         """
-        # Jomao
         ### Adaptive Round-Up Prediction
 
         Predict an adaptive micro-savings amount from your
@@ -101,8 +100,14 @@ with gr.Blocks() as demo:
         )
 
         category = gr.Textbox(
+            choices=[
+                "food_delivery",
+                "ride_sharing",
+                "shopping",
+                "ecommerce"
+                ],
             label="Category",
-            value="Food",
+            value="food_delivery",
         )
 
     # --------------------------------------------------
