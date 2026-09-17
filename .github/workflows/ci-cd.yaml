@@ -92,27 +92,13 @@ jobs:
           python -m pip install --upgrade huggingface_hub
 
 
-      - name: Create or verify Hugging Face Space
+      - name: Verify Hugging Face authentication
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          hf repos create sofikulislam/jomao-roundup-prediction \
-            --repo-type space \
-            --sdk gradio \
-            --exist-ok
+          echo "Checking Hugging Face authentication..."
+          hf auth whoami
 
-
-      - name: Upload repository to Hugging Face Space
-        env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: |
-          hf upload sofikulislam/jomao-roundup-prediction . . \
-            --repo-type space \
-            --exclude ".git/*" \
-            --exclude ".github/*" \
-            --exclude "__pycache__/*" \
-            --exclude "*.pyc" \
-            --exclude ".env" \
-            --exclude "artifact/*" \
-            --exclude "data/*" \
-            --commit-message "Deploy from GitHub Actions"
+          echo "Checking target Space..."
+          hf repo-files ls sofikulislam/jomao-roundup-prediction \
+            --repo-type space
