@@ -3,8 +3,6 @@ import spaces
 
 from roundup.pipeline.prediction_pipeline import RoundupPredictor
 
-
-# Load model once when the Space starts
 predictor = RoundupPredictor()
 
 
@@ -59,10 +57,6 @@ def predict_roundup(
         )
 
 
-# --------------------------------------------------
-# Theme
-# --------------------------------------------------
-
 theme = gr.themes.Soft(
     primary_hue="green",
     secondary_hue="emerald",
@@ -70,9 +64,6 @@ theme = gr.themes.Soft(
 )
 
 
-# --------------------------------------------------
-# Gradio App
-# --------------------------------------------------
 
 with gr.Blocks() as demo:
 
@@ -85,9 +76,6 @@ with gr.Blocks() as demo:
         """
     )
 
-    # --------------------------------------------------
-    # Transaction
-    # --------------------------------------------------
 
     gr.Markdown("### Transaction")
 
@@ -99,20 +87,16 @@ with gr.Blocks() as demo:
             minimum=0,
         )
 
-        category = gr.Textbox(
+        category = gr.Dropdown(
             choices=[
                 "food_delivery",
                 "ride_sharing",
                 "shopping",
-                "ecommerce"
-                ],
+                "ecommerce",
+            ],
             label="Category",
             value="food_delivery",
         )
-
-    # --------------------------------------------------
-    # Spending Behavior
-    # --------------------------------------------------
 
     gr.Markdown("### Spending Behavior")
 
@@ -145,10 +129,6 @@ with gr.Blocks() as demo:
             value=420,
             minimum=0,
         )
-
-    # --------------------------------------------------
-    # Savings Profile
-    # --------------------------------------------------
 
     gr.Markdown("### Savings Profile")
 
@@ -193,18 +173,11 @@ with gr.Blocks() as demo:
         minimum=0,
     )
 
-    # --------------------------------------------------
-    # Prediction Button
-    # --------------------------------------------------
 
     predict_btn = gr.Button(
         "Predict Round-up",
         variant="primary",
     )
-
-    # --------------------------------------------------
-    # Prediction Result
-    # --------------------------------------------------
 
     gr.Markdown("### Prediction")
 
@@ -220,9 +193,6 @@ with gr.Blocks() as demo:
             interactive=False,
         )
 
-    # --------------------------------------------------
-    # Prediction Event
-    # --------------------------------------------------
 
     predict_btn.click(
         fn=predict_roundup,
@@ -246,9 +216,6 @@ with gr.Blocks() as demo:
     )
 
 
-# --------------------------------------------------
-# Launch
-# --------------------------------------------------
 
 if __name__ == "__main__":
     demo.launch(
