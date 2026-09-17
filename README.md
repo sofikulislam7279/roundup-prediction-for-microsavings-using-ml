@@ -33,11 +33,7 @@ Open the application, enter the transaction and user information, and click **Pr
 Bangladesh's Mobile Financial Services (MFS) ecosystem processes hundreds of millions of transactions annually, yet no intelligent mechanism exists for converting everyday payments into automatic savings. Jomao builds a supervised regression model that predicts a personalized, behavior-aware round-up amount for each **Make Payment** transaction in real time.
 
 ```text
-Round-Up Amount (Tk) =
-f(Transaction Amount,
-  User Behavior,
-  Financial State,
-  Historical Patterns)
+Round-Up Amount (Tk) =f(Transaction Amount,User Behavior,Financial State,Historical Patterns)
 ```
 
 ## ❓ Problem Statement
@@ -112,7 +108,7 @@ Transaction Amount = Tk 285
 Instead of always applying a fixed rounding rule, Jomao predicts:
 
 ```text
-Predicted Round-Up = Tk 11.50
+Predicted Round-Up = Tk 15.00
 ```
 
 The resulting amount becomes:
