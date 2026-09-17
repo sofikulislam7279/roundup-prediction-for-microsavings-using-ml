@@ -10,6 +10,7 @@ from pydantic import BaseModel, Field
 from roundup.exception import RoundupException
 from roundup.logger import logging
 from roundup.pipeline.prediction_pipeline import RoundupPredictor
+from roundup.constants import APP_HOST, APP_PORT
 
 
 predictor: RoundupPredictor | None = None
@@ -230,16 +231,12 @@ async def predict_roundup(payload: TransactionInput):
         )
 
 
-# ==========================================================
-# Local development
-# ==========================================================
-
 if __name__ == "__main__":
     import uvicorn
 
     uvicorn.run(
         "app:app",
-        host="0.0.0.0",
-        port=8000,
+        host=APP_HOST,
+        port=APP_PORT,
         reload=True,
     )

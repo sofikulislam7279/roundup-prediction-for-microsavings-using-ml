@@ -56,3 +56,6 @@ MODEL_TRAINER_MODEL_CONFIG_FILE_PATH: str = os.path.join("config", "model.yaml")
 HF_TOKEN_ENV_KEY: str = "HF_TOKEN"
 HF_BUCKET_NAME: str = "sofikulislam/roundup-model-bucket"
 HF_MODEL_PATH: str = "models/model.pkl"
+
+APP_HOST: str = os.getenv("APP_HOST", "0.0.0.0")
+APP_PORT: int = int(os.getenv("APP_PORT", "8000"))
